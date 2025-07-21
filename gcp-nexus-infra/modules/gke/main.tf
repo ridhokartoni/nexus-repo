@@ -1,3 +1,18 @@
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.50.0"
+    }
+  }
+
+  backend "gcs" {
+    bucket= "ridho-nexus-bucket"
+    prefix = "state/gke/main"
+  }
+
+}
+
 # Enable the GKE API
 resource "google_project_service" "gke_api" {
   project = var.project_id

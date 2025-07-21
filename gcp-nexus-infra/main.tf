@@ -6,6 +6,13 @@ terraform {
       version = ">= 4.50.0"
     }
   }
+
+  backend "gcs" {
+    bucket= "ridho-nexus-bucket"
+    prefix = "state/main"
+  }
+
+
 }
 
 

@@ -1,3 +1,20 @@
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.50.0"
+    }
+  }
+
+  backend "gcs" {
+    bucket= "ridho-nexus-bucket"
+    prefix = "state/storage/main"
+  }
+
+}
+
+
+
 # Enable the required APIs
 resource "google_project_service" "storage_api" {
   project = var.project_id
