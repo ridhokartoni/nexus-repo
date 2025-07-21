@@ -2,11 +2,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nexus-deployment # Must match the name in the base deployment.yaml
+  name: nexus-deployment
 spec:
-  replicas: 3 # Change the number of replicas for production
+  replicas: 3
   template:
     spec:
       containers:
-      - name: nexus # Must match the container name
+      - name: nexus
         image: us-central1-docker.pkg.dev/nexus-test-466602/nexus-repo/nexus-custom:v3.68.1
