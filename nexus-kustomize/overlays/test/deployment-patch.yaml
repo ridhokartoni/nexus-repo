@@ -1,0 +1,12 @@
+# This patch increases the replica count and specifies a versioned image tag
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus-deployment # Must match the name in the base deployment.yaml
+spec:
+  replicas: 3 # Change the number of replicas for production
+  template:
+    spec:
+      containers:
+      - name: nexus # Must match the container name
+        image: us-central1-docker.pkg.dev/nexus-test-466602/nexus-repo/nexus-custom:v3.68.1

@@ -1,0 +1,5 @@
+# --- Namespace: Define the namespace for all Nexus resources ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nexus-ns

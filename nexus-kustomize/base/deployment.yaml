@@ -1,0 +1,34 @@
+# --- Deployment: Defines the desired state for our Nexus pod ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus-deployment
+  namespace: nexus-ns
+  labels:
+    app: nexus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus
+  template:
+    metadata:
+      labels:
+        app: nexus
+    spec:
+      serviceAccountName: nexus-ksa 
+      securityContext:
+        runAsUser: 200    
+        fsGroup: 200      
+      containers:
+        - name: nexus
+          image: us-central1-docker.pkg.dev/nexus-test-466602/nexus-repo/nexus-custom:latest
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - name: nexus-data
+              mountPath: /nexus-data
+      volumes:
+        - name: nexus-data
+          persistentVolumeClaim:
+            claimName: nexus-pvc

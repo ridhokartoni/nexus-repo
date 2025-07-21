@@ -1,0 +1,13 @@
+# This file lists all the resources that belong to the base application.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Define the namespace for all resources in this kustomization
+namespace: nexus-ns
+
+resources:
+- namespace.yaml
+- serviceaccount.yaml
+- service.yaml
+- pvc.yaml
+- deployment.yaml

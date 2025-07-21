@@ -1,0 +1,11 @@
+# --- PersistentVolumeClaim: Requests storage for Nexus data ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexus-pvc
+  namespace: nexus-ns 
+  accessModes:
+    - ReadWriteOnce 
+  resources:
+    requests:
+      storage: 8Gi

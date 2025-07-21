@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Inherit all resources from the base
+resources:
+- ../../base
+
+# Specify a new namespace for the production environment
+namespace: nexus-prod
+
+# Apply the patch to the Deployment resource
+patches:
+- path: deployment-patch.yaml
+  target:
+    kind: Deployment
+    name: nexus-deployment
