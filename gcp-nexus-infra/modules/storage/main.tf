@@ -1,4 +1,4 @@
-# Enable the Datastore API for the project
+# Enable the required APIs
 resource "google_project_service" "storage_api" {
   project = var.project_id
   service = "storage.googleapis.com"
@@ -11,7 +11,6 @@ resource "google_project_service" "datastore_api" {
   disable_on_destroy = false
 }
 
-# Enable the Artifact Registry API
 resource "google_project_service" "artifactregistry_api" {
   project = var.project_id
   service = "artifactregistry.googleapis.com"
@@ -24,6 +23,7 @@ resource "google_project_service" "firestore_api" {
   disable_on_destroy = false
 }
 
+# Create the Datastore database
 resource "google_firestore_database" "datastore_db" {
   project     = var.project_id
   name        = "(default)"

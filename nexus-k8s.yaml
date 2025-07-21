@@ -6,7 +6,7 @@ kind: Namespace
 metadata:
   name: nexus-ns
 ---
-
+# --- ServiceAccount: Create a service account for Nexus ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -27,11 +27,11 @@ metadata:
   labels:
     app: nexus
 spec:
-  type: LoadBalancer # Exposes the service on a static port on the node
+  type: LoadBalancer
   ports:
-    - port: 8081 # Port inside the cluster
-      targetPort: 8081 # Port on the container
-      nodePort: 30081 # Port to access from your host machine (e.g., http://<minikube-ip>:30081)
+    - port: 8081 
+      targetPort: 8081 
+      nodePort: 30081 
   selector:
     app: nexus
 
@@ -42,13 +42,12 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nexus-pvc
-  namespace: nexus-ns # <--- Add this line
-spec:
+  namespace: nexus-ns 
   accessModes:
-    - ReadWriteOnce # Can be mounted by a single node
+    - ReadWriteOnce 
   resources:
     requests:
-      storage: 8Gi # Request 8 GB of storage from Minikube's provisioner
+      storage: 8Gi
 
 ---
 
@@ -72,8 +71,8 @@ spec:
     spec:
       serviceAccountName: nexus-ksa 
       securityContext:
-        runAsUser: 200    # The user ID that the Nexus process runs as
-        fsGroup: 200      # The group ID to own the mounted volume
+        runAsUser: 200    
+        fsGroup: 200      
       containers:
         - name: nexus
           image: us-central1-docker.pkg.dev/nexus-test-466602/nexus-repo/nexus-custom:latest

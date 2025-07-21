@@ -19,7 +19,6 @@ resource "google_container_cluster" "primary" {
     services_secondary_range_name = var.service_subnet_name
   }
   
-  # We are using the main subnet for the control plane, as requested.
   private_cluster_config {
     enable_private_nodes    = true # Recommended for security
     enable_private_endpoint = false
@@ -38,7 +37,7 @@ resource "google_container_cluster" "primary" {
   depends_on = [google_project_service.gke_api]
 }
 
-# Create a custom node pool with the specified settings
+# Create a custom node pool
 resource "google_container_node_pool" "primary_nodes" {
   project    = var.project_id
   name       = "primary-node-pool"

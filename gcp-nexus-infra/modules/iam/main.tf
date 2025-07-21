@@ -1,3 +1,5 @@
+# Enable the required APIs
+
 resource "google_project_service" "iam_api" {
   project = var.project_id
   service = "iam.googleapis.com"
@@ -19,7 +21,6 @@ resource "google_service_account" "sa_nexus" {
 }
 
 # IAM role bindings for the GKE Service Account
-# Note: GKE requires a few standard roles to function correctly.
 resource "google_project_iam_member" "gke_sa_container_node" {
   project = var.project_id
   role    = "roles/container.nodeServiceAccount" # Correct role for GKE nodes
