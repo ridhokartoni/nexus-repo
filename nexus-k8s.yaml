@@ -1,0 +1,88 @@
+# nexus-k8s.yaml
+
+# --- Namespace: Define the namespace for all Nexus resources ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nexus-ns
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nexus-ksa
+  namespace: nexus-ns
+  annotations:
+    iam.gke.io/gcp-service-account: sa-nexus@nexus-test-466602.iam.gserviceaccount.com
+
+---
+
+# --- Service: Exposes Nexus to your local machine ---
+# Service to expose Nexus to the internet
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexus-service
+  namespace: nexus-ns
+  labels:
+    app: nexus
+spec:
+  type: LoadBalancer # Exposes the service on a static port on the node
+  ports:
+    - port: 8081 # Port inside the cluster
+      targetPort: 8081 # Port on the container
+      nodePort: 30081 # Port to access from your host machine (e.g., http://<minikube-ip>:30081)
+  selector:
+    app: nexus
+
+---
+
+# --- PersistentVolumeClaim: Requests storage for Nexus data ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexus-pvc
+  namespace: nexus-ns # <--- Add this line
+spec:
+  accessModes:
+    - ReadWriteOnce # Can be mounted by a single node
+  resources:
+    requests:
+      storage: 8Gi # Request 8 GB of storage from Minikube's provisioner
+
+---
+
+# --- Deployment: Defines the desired state for our Nexus pod ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus-deployment
+  namespace: nexus-ns
+  labels:
+    app: nexus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus
+  template:
+    metadata:
+      labels:
+        app: nexus
+    spec:
+      serviceAccountName: nexus-ksa 
+      securityContext:
+        runAsUser: 200    # The user ID that the Nexus process runs as
+        fsGroup: 200      # The group ID to own the mounted volume
+      containers:
+        - name: nexus
+          image: us-central1-docker.pkg.dev/nexus-test-466602/nexus-repo/nexus-custom:latest
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - name: nexus-data
+              mountPath: /nexus-data
+      volumes:
+        - name: nexus-data
+          persistentVolumeClaim:
+            claimName: nexus-pvc
