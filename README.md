@@ -132,7 +132,7 @@ Now, we'll deploy the Nexus application to the GKE cluster.
       name: nexus-ksa
       namespace: nexus-ns
       annotations:
-        # 👇 UPDATE THIS with the output from `terraform apply`
+        # UPDATE THIS with the output from `terraform apply`
         iam.gke.io/gcp-service-account: "sa-nexus@your-project-id.iam.gserviceaccount.com"
     ---
     # ...
@@ -180,4 +180,3 @@ Now, we'll deploy the Nexus application to the GKE cluster.
     - In the Nexus UI, navigate to **Administration (⚙️) > Repository > Blob Stores**.
     - Click **Create blob store** and select **Google Cloud Storage** as the `Type`.
     - Fill in the `Bucket` name. No credentials are required thanks to Workload Identity.
-    - !Nexus GCS Blobstore Configuration
