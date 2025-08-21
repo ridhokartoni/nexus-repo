@@ -12,10 +12,7 @@ terraform {
     prefix = "state/main"
   }
 
-
 }
-
-
 
 provider "google" {
   project = var.gcp_project_id
